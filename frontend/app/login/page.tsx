@@ -53,68 +53,66 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background via-muted/20 to-background">
-      <div className="absolute inset-0 bg-[url('/abstract-gym-pattern.png')] opacity-5 bg-cover bg-center" />
-
-      <Card className="w-full max-w-md relative z-10 border-2 shadow-2xl">
-        <CardHeader className="space-y-4 text-center">
-          <div className="mx-auto bg-primary p-4 rounded-2xl w-fit animate-pulse-glow">
-            <Dumbbell className="h-12 w-12 text-primary-foreground" />
-          </div>
-          <div>
-            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Gym Rat
-            </CardTitle>
-            <CardDescription className="text-base mt-2">Inicia sesión para continuar tu entrenamiento</CardDescription>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="username">Usuario</Label>
-              <Input
-                id="username"
-                type="text"
-                placeholder="tu_usuario"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                disabled={loading}
-                className="h-12"
-              />
+      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background via-muted/20 to-background">
+        <Card className="w-full max-w-md relative z-10 border-4 border-purple-500 shadow-[0_0_30px_rgba(168,85,247,0.6)]">
+          <CardHeader className="space-y-4 text-center">
+            <div className="mx-auto bg-primary p-4 rounded-2xl w-fit animate-pulse-glow">
+              <Dumbbell className="h-12 w-12 text-primary-foreground" />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Contraseña</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                disabled={loading}
-                className="h-12"
-              />
+            <div>
+              <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Gym Rat
+              </CardTitle>
+              <CardDescription className="text-base mt-2">Inicia sesión para continuar tu entrenamiento</CardDescription>
             </div>
-            <Button type="submit" className="w-full h-12 text-base font-semibold" disabled={loading}>
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Iniciando sesión...
-                </>
-              ) : (
-                "Iniciar Sesión"
-              )}
-            </Button>
-          </form>
-          <div className="mt-6 text-center">
-            <p className="text-sm text-muted-foreground">
-              ¿No tienes cuenta?{" "}
-              <Link href="/register" className="text-primary font-semibold hover:underline">
-                Regístrate aquí
-              </Link>
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="username">Usuario</Label>
+                <Input
+                    id="username"
+                    type="text"
+                    placeholder="tu_usuario"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    disabled={loading}
+                    className="h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Contraseña</Label>
+                <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={loading}
+                    className="h-12"
+                />
+              </div>
+              <Button type="submit" className="w-full h-12 text-base font-semibold" disabled={loading}>
+                {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Iniciando sesión...
+                    </>
+                ) : (
+                    "Iniciar Sesión"
+                )}
+              </Button>
+            </form>
+            <div className="mt-6 text-center">
+              <p className="text-sm text-muted-foreground">
+                ¿No tienes cuenta?{" "}
+                <Link href="/register" className="text-primary font-semibold hover:underline">
+                  Regístrate aquí
+                </Link>
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
   )
 }

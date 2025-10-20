@@ -13,11 +13,12 @@ public class MapperUtil {
         dto.setId(user.getId());
         dto.setName(user.getName());
         dto.setUsername(user.getUsername());
-        dto.setRole(user.getRole());
+        dto.setRole(user.getRole().name());
         dto.setStrength(user.getStrength());
         dto.setEndurance(user.getEndurance());
         dto.setFlexibility(user.getFlexibility());
         dto.setAccessoryPurchased(user.isAccessoryPurchased());
+        dto.setAccessoryName(user.getAccessoryName());
         dto.setSessions(user.getSessions().stream()
                 .map(MapperUtil::toDto)
                 .collect(Collectors.toList()));
@@ -29,13 +30,14 @@ public class MapperUtil {
         AccessoryDto dto = new AccessoryDto();
         dto.setId(a.getId());
         dto.setName(a.getName());
+        dto.setDescription(a.getDescription());
+        dto.setPrice(a.getPrice());
         return dto;
     }
 
     public static ExerciseDto toDto(Exercise e) {
         if(e == null) return null;
         ExerciseDto dto = new ExerciseDto();
-        dto.setId(e.getId());
         dto.setName(e.getName());
         dto.setDescription(e.getDescription());
         dto.setStrengthImpact(e.getStrengthImpact());

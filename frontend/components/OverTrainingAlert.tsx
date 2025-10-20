@@ -48,23 +48,37 @@ interface OverTrainingAlertProps {
     flexibility: number
   }
   lastTrainedStat?: "strength" | "endurance" | "flexibility" | null
+  shouldClose?: boolean
 }
 
-export function OverTrainingAlert({ stats, lastTrainedStat }: OverTrainingAlertProps) {
+export function OverTrainingAlert({ stats, lastTrainedStat, shouldClose }: OverTrainingAlertProps) {
   const [show, setShow] = useState(false)
   const [alertType, setAlertType] = useState<"strength" | "endurance" | "flexibility">("strength")
   const [phrase, setPhrase] = useState("")
+  const [wasManuallyClosed, setWasManuallyClosed] = useState(false)
+  const [lastAlertType, setLastAlertType] = useState<"strength" | "endurance" | "flexibility" | null>(null)
 
   useEffect(() => {
+    console.log("[v0] OverTrainingAlert - Stats:", stats)
+    console.log("[v0] OverTrainingAlert - lastTrainedStat:", lastTrainedStat)
+    console.log("[v0] OverTrainingAlert - shouldClose:", shouldClose)
+    console.log("[v0] OverTrainingAlert - wasManuallyClosed:", wasManuallyClosed)
+
+    if (shouldClose) {
+      console.log("[v0] OverTrainingAlert - Closing due to shouldClose")
+      setShow(false)
+      return
+    }
+
     const overTrainingStats: Array<"strength" | "endurance" | "flexibility"> = []
 
     if (stats.strength >= 100) overTrainingStats.push("strength")
     if (stats.endurance >= 100) overTrainingStats.push("endurance")
     if (stats.flexibility >= 100) overTrainingStats.push("flexibility")
 
-    if (overTrainingStats.length > 0) {
-      setShow(true)
+    console.log("[v0] OverTrainingAlert - overTrainingStats:", overTrainingStats)
 
+    if (overTrainingStats.length > 0) {
       let selectedType: "strength" | "endurance" | "flexibility"
 
       if (lastTrainedStat && overTrainingStats.includes(lastTrainedStat)) {
@@ -73,44 +87,65 @@ export function OverTrainingAlert({ stats, lastTrainedStat }: OverTrainingAlertP
         selectedType = overTrainingStats[0]
       }
 
-      setAlertType(selectedType)
+      console.log("[v0] OverTrainingAlert - selectedType:", selectedType)
+      console.log("[v0] OverTrainingAlert - lastAlertType:", lastAlertType)
 
-      const phrases = MOTIVATIONAL_PHRASES[selectedType]
-      const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)]
-      setPhrase(randomPhrase)
+      if (lastAlertType !== selectedType) {
+        console.log("[v0] OverTrainingAlert - Alert type changed, resetting wasManuallyClosed")
+        setWasManuallyClosed(false)
+        setLastAlertType(selectedType)
+      }
+
+      if (!wasManuallyClosed) {
+        setShow(true)
+        setAlertType(selectedType)
+
+        const phrases = MOTIVATIONAL_PHRASES[selectedType]
+        const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)]
+        setPhrase(randomPhrase)
+      }
     } else {
+      console.log("[v0] OverTrainingAlert - No overtraining, hiding alert")
       setShow(false)
+      setWasManuallyClosed(false)
+      setLastAlertType(null)
     }
-  }, [stats, lastTrainedStat])
+  }, [stats, lastTrainedStat, shouldClose, wasManuallyClosed, lastAlertType])
+
+  const handleClose = () => {
+    console.log("[v0] OverTrainingAlert - User closed alert")
+    setShow(false)
+    setWasManuallyClosed(true)
+  }
 
   return (
-    <Dialog open={show} onOpenChange={setShow}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <div className="flex items-center justify-center mb-4">
-            <div className="bg-destructive/20 p-3 rounded-full">
-              <AlertTriangle className="h-8 w-8 text-destructive" />
+      <Dialog open={show} onOpenChange={handleClose}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="flex items-center justify-center mb-4">
+              <div className="bg-destructive/20 p-3 rounded-full">
+                <AlertTriangle className="h-8 w-8 text-destructive" />
+              </div>
             </div>
+            <DialogTitle className="text-center text-xl">{ALERT_MESSAGES[alertType]}</DialogTitle>
+            <DialogDescription className="text-center text-base italic pt-2">{phrase}</DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col items-center space-y-4">
+            <div className="w-full">
+              <img
+                  src={ALERT_IMAGES[alertType] || "/placeholder.svg"}
+                  alt="Descanso motivacional"
+                  className="w-full h-auto rounded-lg"
+                  onError={(e) => {
+                    e.currentTarget.src = "/motivational-gym-rest-illustration.jpg"
+                  }}
+              />
+            </div>
+            <Button onClick={handleClose} className="w-full bg-transparent" variant="outline">
+              Entendido
+            </Button>
           </div>
-          <DialogTitle className="text-center text-xl">{ALERT_MESSAGES[alertType]}</DialogTitle>
-          <DialogDescription className="text-center text-base italic pt-2">{phrase}</DialogDescription>
-        </DialogHeader>
-        <div className="flex flex-col items-center space-y-4">
-          <div className="w-full">
-            <img
-              src={ALERT_IMAGES[alertType] || "/placeholder.svg"}
-              alt="Descanso motivacional"
-              className="w-full h-auto rounded-lg"
-              onError={(e) => {
-                e.currentTarget.src = "/motivational-gym-rest-illustration.jpg"
-              }}
-            />
-          </div>
-          <Button onClick={() => setShow(false)} className="w-full" variant="outline">
-            Entendido
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </DialogContent>
+      </Dialog>
   )
 }

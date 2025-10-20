@@ -31,6 +31,7 @@ export default function DashboardPage() {
   const router = useRouter()
   const { user, isLoading } = useAuth()
   const [lastTrainedStat, setLastTrainedStat] = useState<"strength" | "endurance" | "flexibility" | null>(null)
+  const [closeAlert, setCloseAlert] = useState(false)
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -48,7 +49,16 @@ export default function DashboardPage() {
 
   const purchasedAccessory = ACCESSORIES.find((acc) => acc.name === user.accessoryName)
 
-  const totalEnergy = (user?.strength || 0) + (user?.endurance || 0) + (user?.flexibility || 0)
+  const totalStats = (user?.strength || 0) + (user?.endurance || 0) + (user?.flexibility || 0)
+  const totalEnergy = 300 - totalStats // Energía máxima (300) menos las estadísticas
+
+  const handleAccessoryPurchased = () => {
+    setCloseAlert(true)
+    // Resetear después de un momento para permitir que la alerta se vuelva a mostrar si es necesario
+    setTimeout(() => {
+      setCloseAlert(false)
+    }, 1000)
+  }
 
   return (
       <div className="min-h-screen bg-gradient-to-br from-background via-muted/10 to-background">
@@ -58,12 +68,12 @@ export default function DashboardPage() {
           {/* Hero Section */}
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-secondary to-secondary/80 p-8 md:p-12 text-secondary-foreground">
             <div className="relative z-10">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">¡Hola, {user.name}! 💪</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">¡Hola, {user.name}! 🦾</h1>
               <p className="text-xl text-secondary-foreground/90 max-w-2xl text-pretty">
                 Bienvenido a tu espacio de entrenamiento. Sigue mejorando tus estadísticas y alcanza tus objetivos.
               </p>
             </div>
-            <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
+            <div className="absolute right-0 top-0 h-full w-1/3 opacity-50">
               <img
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202025-10-09%20at%2012.34.38%283%29-kniT9oTPDSztZvxCjAHPuy4AxUeMvC.jpeg"
                   alt=""
@@ -79,6 +89,7 @@ export default function DashboardPage() {
                 flexibility: user.flexibility,
               }}
               lastTrainedStat={lastTrainedStat}
+              shouldClose={closeAlert}
           />
 
           {/* Stats Grid */}
@@ -117,15 +128,16 @@ export default function DashboardPage() {
             <EnergyBar currentEnergy={totalEnergy} maxEnergy={300} />
 
             <h2 className="text-2xl font-bold mb-6 mt-8">Acciones de Entrenamiento</h2>
-            <TrainingActions onStatTrained={setLastTrainedStat} />
+            <TrainingActions onStatTrained={setLastTrainedStat} onAccessoryPurchased={handleAccessoryPurchased} />
           </div>
 
           {/* Recent Sessions */}
-          <Card className="border-2">
-            <CardHeader>
+          <Card className="border-2 relative overflow-hidden">
+            <div className="absolute inset-0 bg-[url('/abstract-gym-pattern.png')] opacity-30 bg-cover bg-center" />
+            <CardHeader className="relative z-10">
               <CardTitle className="text-2xl">Sesiones Recientes</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="relative z-10">
               {user.sessions && user.sessions.length > 0 ? (
                   <div className="grid gap-4 md:grid-cols-2">
                     {user.sessions.slice(0, 6).map((session) => (

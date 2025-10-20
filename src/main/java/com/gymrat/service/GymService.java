@@ -73,7 +73,6 @@ public class GymService {
         return userRepository.save(u);
     }
 
-    // Ahora train y rest se pueden reescribir así:
     public User train(Long userId, Stat stat, int amount) {
         return updateStats(userId, Map.of(stat, amount), "Trained " + stat.name() + " by " + amount);
     }
@@ -86,8 +85,6 @@ public class GymService {
         ), "Rested by " + amount);
     }
 
-
-    // Método privado para actualizar stats con límites
     private void updateStat(User u, Stat stat, int delta) {
         switch (stat) {
             case STRENGTH -> u.setStrength(Math.max(0, Math.min(MAX_STAT, u.getStrength() + delta)));
@@ -114,6 +111,7 @@ public class GymService {
         Accessory a = new Accessory(accessoryName);
         a = accessoryRepository.save(a);
         u.setAccessoryPurchased(true);
+        u.setAccessoryName(accessoryName);
         userRepository.save(u);
         return a;
     }
@@ -147,7 +145,6 @@ public class GymService {
     }
 
     public List<TrainingSession> getSessions(Long userId) {
-        // Si el usuario no existe, lanzamos excepción
         getUser(userId);
         return sessionRepository.findByUserId(userId);
     }

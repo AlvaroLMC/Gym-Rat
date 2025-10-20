@@ -1,39 +1,29 @@
 package com.gymrat.model;
 
-import com.gymrat.exception.ResourceNotFoundException;
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Table(name = "exercises")
+@Data
 public class Exercise {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(length = 1000)
     private String description;
-    private int strengthImpact;
-    private int enduranceImpact;
-    private int flexibilityImpact;
 
-    public Exercise() {}
-    public Exercise(String name, String description, int s, int e, int f) {
-        this.name = name; this.description = description;
-        this.strengthImpact = s; this.enduranceImpact = e; this.flexibilityImpact = f;
-    }
+    @Column(nullable = false)
+    private Integer strengthImpact = 0; // Impacto en fuerza (0-10)
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public int getStrengthImpact() { return strengthImpact; }
-    public void setStrengthImpact(int strengthImpact) { this.strengthImpact = strengthImpact; }
-    public int getEnduranceImpact() { return enduranceImpact; }
-    public void setEnduranceImpact(int enduranceImpact) { this.enduranceImpact = enduranceImpact; }
-    public int getFlexibilityImpact() { return flexibilityImpact; }
-    public void setFlexibilityImpact(int flexibilityImpact) { this.flexibilityImpact = flexibilityImpact; }
+    @Column(nullable = false)
+    private Integer enduranceImpact = 0; // Impacto en resistencia (0-10)
 
-    public static Exercise validateExists(Exercise exercise, Long id) {
-        if (exercise == null) throw new ResourceNotFoundException("Exercise not found with id " + id);
-        return exercise;
-    }
+    @Column(nullable = false)
+    private Integer flexibilityImpact = 0; // Impacto en flexibilidad (0-10)
 }

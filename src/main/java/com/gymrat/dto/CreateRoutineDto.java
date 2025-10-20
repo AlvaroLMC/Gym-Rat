@@ -4,8 +4,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class RoutineDto {
-    private Long id;
+public class CreateRoutineDto {
     private String name;
-    private List<ExerciseDto> exercises;
+    private List<Long> exercises; // Lista de IDs de ejercicios
 }

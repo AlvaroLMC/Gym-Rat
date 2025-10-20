@@ -1,29 +1,39 @@
 package com.gymrat.service;
 
+import com.gymrat.model.User;
 import com.gymrat.repository.UserRepository;
-import org.springframework.context.annotation.Primary;
-import org.springframework.security.core.userdetails.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-@Primary
+
+import java.util.Collection;
+import java.util.Collections;
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
-
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.gymrat.model.User user = userRepository.findByUsernameIgnoreCase(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userRepository.findByUsernameIgnoreCase(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getUsername())
-                .password(user.getPassword()) // hash BCrypt
-                //.roles(user.getRole().name())
-                .authorities("ROLE_" + user.getRole().name()) // 👈 fuerza el prefijo explícitamente
-                .build();
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                getAuthorities(user)
+        );
+    }
+
+    private Collection<? extends GrantedAuthority> getAuthorities(User user) {
+        // Convertir el enum Role a String con el prefijo "ROLE_"
+        String roleName = "ROLE_" + user.getRole().name();
+        return Collections.singletonList(new SimpleGrantedAuthority(roleName));
     }
 }

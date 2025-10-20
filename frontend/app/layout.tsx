@@ -15,21 +15,29 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-  children,
-}: Readonly<{
+                                     children,
+                                   }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <AuthProvider>
-            {children}
-            <Toaster />
-          </AuthProvider>
-        </Suspense>
-        <Analytics />
+      <html lang="es">
+      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased relative`}>
+      <div
+          className="fixed inset-0 -z-10 opacity-[0.15]"
+          style={{
+            backgroundImage: "url(/gym-pattern-bg.png)",
+            backgroundRepeat: "repeat",
+            backgroundSize: "400px 400px",
+          }}
+      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <AuthProvider>
+          {children}
+          <Toaster />
+        </AuthProvider>
+      </Suspense>
+      <Analytics />
       </body>
-    </html>
+      </html>
   )
 }
