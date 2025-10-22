@@ -108,7 +108,7 @@ public class GymService {
                     "User does not meet requirements to purchase accessory or accessory already purchased"
             );
         }
-        Accessory a = new Accessory(accessoryName);
+        Accessory a = new Accessory(null, accessoryName);
         a = accessoryRepository.save(a);
         u.setAccessoryPurchased(true);
         u.setAccessoryName(accessoryName);

@@ -1,8 +1,25 @@
 version: '3.8'
+
 services:
-  gym-rat:
-    build: .
-    ports:
-      - "8080:8080"
+  postgres:
+    image: postgres:16-alpine
+    container_name: gymrat-postgres
+    restart: unless-stopped
     environment:
-      - SPRING_PROFILES_ACTIVE=prod
+      POSTGRES_DB: gymrat_db
+      POSTGRES_USER: gymrat
+      POSTGRES_PASSWORD: gymrat1234
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gymrat -d gymrat_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local

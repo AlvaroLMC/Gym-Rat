@@ -232,7 +232,7 @@ export function TrainingActions({ onStatTrained, onAccessoryPurchased }: Trainin
                     <Heart className="h-4 w-4 mr-2" />
                     Descansar
                   </Button>
-                  {!canRest && <p className="text-xs text-destructive text-center">No puedes exceder el descanso, activate!: {totalStats}</p>}
+                  {!canRest && <p className="text-xs text-destructive text-center">No puedes exceder el descanso, activate!</p>}
                 </>
             )}
           </CardContent>
@@ -488,7 +488,7 @@ export function TrainingActions({ onStatTrained, onAccessoryPurchased }: Trainin
                             "                <Heart className=\"h-4 w-4 mr-2\" />\n" +
                             "                Descansar\n" +
                             "              </Button>\n" +
-                            "              {!canRest && <p className=\"text-xs text-destructive text-center\">No puedes exceder el descanso, activate! {totalStats}</p>}\n" +
+                            "              {!canRest && <p className=\"text-xs text-destructive text-center\">No puedes exceder el descanso, activate! </p>}\n" +
                             "            </>\n" +
                             "          )}\n" +
                             "        </CardContent>\n" +

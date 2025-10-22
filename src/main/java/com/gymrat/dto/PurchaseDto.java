@@ -1,19 +1,13 @@
 package com.gymrat.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PurchaseDto {
     private String accessoryName;
 
-    public PurchaseDto() {}
-
-    public PurchaseDto(String accessoryName) {
-        this.accessoryName = accessoryName;
-    }
-
-    public String getAccessoryName() {
-        return accessoryName;
-    }
-
-    public void setAccessoryName(String accessoryName) {
-        this.accessoryName = accessoryName;
-    }
 }

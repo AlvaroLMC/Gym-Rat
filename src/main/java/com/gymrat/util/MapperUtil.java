@@ -2,7 +2,6 @@ package com.gymrat.util;
 
 import com.gymrat.dto.*;
 import com.gymrat.model.*;
-
 import java.util.stream.Collectors;
 
 public class MapperUtil {
@@ -30,8 +29,6 @@ public class MapperUtil {
         AccessoryDto dto = new AccessoryDto();
         dto.setId(a.getId());
         dto.setName(a.getName());
-        dto.setDescription(a.getDescription());
-        dto.setPrice(a.getPrice());
         return dto;
     }
 
@@ -40,6 +37,7 @@ public class MapperUtil {
         ExerciseDto dto = new ExerciseDto();
         dto.setName(e.getName());
         dto.setDescription(e.getDescription());
+        dto.setCategory(e.getCategory());
         dto.setStrengthImpact(e.getStrengthImpact());
         dto.setEnduranceImpact(e.getEnduranceImpact());
         dto.setFlexibilityImpact(e.getFlexibilityImpact());

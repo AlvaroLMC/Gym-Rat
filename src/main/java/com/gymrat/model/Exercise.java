@@ -1,11 +1,15 @@
 package com.gymrat.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "exercises")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Exercise {
 
     @Id
@@ -18,12 +22,16 @@ public class Exercise {
     @Column(length = 1000)
     private String description;
 
-    @Column(nullable = false)
-    private Integer strengthImpact = 0; // Impacto en fuerza (0-10)
+    @Column(length = 1000)
+    private String category;
 
     @Column(nullable = false)
-    private Integer enduranceImpact = 0; // Impacto en resistencia (0-10)
+    private Integer strengthImpact = 0;
 
     @Column(nullable = false)
-    private Integer flexibilityImpact = 0; // Impacto en flexibilidad (0-10)
+    private Integer enduranceImpact = 0;
+
+    @Column(nullable = false)
+    private Integer flexibilityImpact = 0;
+
 }

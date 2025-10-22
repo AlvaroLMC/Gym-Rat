@@ -55,14 +55,23 @@ export function OverTrainingAlert({ stats, lastTrainedStat, shouldClose }: OverT
   const [show, setShow] = useState(false)
   const [alertType, setAlertType] = useState<"strength" | "endurance" | "flexibility">("strength")
   const [phrase, setPhrase] = useState("")
-  const [wasManuallyClosed, setWasManuallyClosed] = useState(false)
-  const [lastAlertType, setLastAlertType] = useState<"strength" | "endurance" | "flexibility" | null>(null)
+
+  useEffect(() => {
+    const stored = localStorage.getItem("overtraining-alert-closed")
+    if (stored) {
+      const { type, closed } = JSON.parse(stored)
+      // Check if there's overtraining for this type
+      const hasOvertraining = stats[type as keyof typeof stats] >= 100
+      if (hasOvertraining && closed) {
+        setShow(false)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     console.log("[v0] OverTrainingAlert - Stats:", stats)
     console.log("[v0] OverTrainingAlert - lastTrainedStat:", lastTrainedStat)
     console.log("[v0] OverTrainingAlert - shouldClose:", shouldClose)
-    console.log("[v0] OverTrainingAlert - wasManuallyClosed:", wasManuallyClosed)
 
     if (shouldClose) {
       console.log("[v0] OverTrainingAlert - Closing due to shouldClose")
@@ -88,15 +97,20 @@ export function OverTrainingAlert({ stats, lastTrainedStat, shouldClose }: OverT
       }
 
       console.log("[v0] OverTrainingAlert - selectedType:", selectedType)
-      console.log("[v0] OverTrainingAlert - lastAlertType:", lastAlertType)
 
-      if (lastAlertType !== selectedType) {
-        console.log("[v0] OverTrainingAlert - Alert type changed, resetting wasManuallyClosed")
-        setWasManuallyClosed(false)
-        setLastAlertType(selectedType)
+      const stored = localStorage.getItem("overtraining-alert-closed")
+      let shouldShowAlert = true
+
+      if (stored) {
+        const { type, closed } = JSON.parse(stored)
+        // Only keep it closed if it's the same type
+        if (type === selectedType && closed) {
+          shouldShowAlert = false
+          console.log("[v0] OverTrainingAlert - Alert was manually closed for this type")
+        }
       }
 
-      if (!wasManuallyClosed) {
+      if (shouldShowAlert) {
         setShow(true)
         setAlertType(selectedType)
 
@@ -105,17 +119,22 @@ export function OverTrainingAlert({ stats, lastTrainedStat, shouldClose }: OverT
         setPhrase(randomPhrase)
       }
     } else {
-      console.log("[v0] OverTrainingAlert - No overtraining, hiding alert")
+      console.log("[v0] OverTrainingAlert - No overtraining, hiding alert and clearing localStorage")
       setShow(false)
-      setWasManuallyClosed(false)
-      setLastAlertType(null)
+      localStorage.removeItem("overtraining-alert-closed")
     }
-  }, [stats, lastTrainedStat, shouldClose, wasManuallyClosed, lastAlertType])
+  }, [stats, lastTrainedStat, shouldClose])
 
   const handleClose = () => {
     console.log("[v0] OverTrainingAlert - User closed alert")
     setShow(false)
-    setWasManuallyClosed(true)
+    localStorage.setItem(
+        "overtraining-alert-closed",
+        JSON.stringify({
+          type: alertType,
+          closed: true,
+        }),
+    )
   }
 
   return (

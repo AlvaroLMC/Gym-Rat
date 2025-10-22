@@ -2,8 +2,6 @@ import axios from "axios"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
 
-console.log("[v0] API Base URL:", API_BASE_URL)
-
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -11,112 +9,81 @@ const api = axios.create({
   },
 })
 
-// Interceptor para agregar JWT a todas las peticiones
-api.interceptors.request.use(
-  (config) => {
-    const authHeader = config.headers.Authorization
-    const authHeaderPreview =
-      authHeader && typeof authHeader === "string"
-        ? authHeader.substring(0, 27) + "..."
-        : authHeader
-          ? "Present (non-string)"
-          : "None"
-
-    console.log("[v0] Request:", {
-      method: config.method?.toUpperCase(),
-      url: config.url,
-      fullURL: `${config.baseURL}${config.url}`,
-      data: config.data,
-      authHeader: authHeaderPreview,
-    })
-
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("token")
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`
-      }
+// Add token to requests if available
+api.interceptors.request.use((config) => {
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token")
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
     }
-    return config
-  },
-  (error) => {
-    return Promise.reject(error)
-  },
-)
+  }
+  return config
+})
 
-// Interceptor para manejar errores de autenticación
-api.interceptors.response.use(
-  (response) => {
-    console.log("[v0] Response:", {
-      status: response.status,
-      data: response.data,
-    })
-    return response
-  },
-  (error) => {
-    console.error("[v0] Error Response:", {
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-      headers: error.response?.headers,
-      message: error.message,
-      requestURL: error.config?.url,
-      requestMethod: error.config?.method,
-      requestAuthHeader: error.config?.headers?.Authorization ? "Present" : "Missing",
-    })
-
-    if (error.response?.status === 401 && typeof window !== "undefined") {
-      localStorage.removeItem("token")
-      localStorage.removeItem("user")
-      window.location.href = "/login"
-    }
-    return Promise.reject(error)
-  },
-)
-
-// Auth endpoints
+// Auth API
 export const authAPI = {
-  register: (data: { name: string; username: string; password: string }) => api.post("/api/auth/register", data),
   login: (data: { username: string; password: string }) => api.post("/api/auth/login", data),
+  register: (data: { name: string; username: string; password: string }) => api.post("/api/auth/register", data),
 }
 
-// User endpoints
+// User API
 export const userAPI = {
   getUser: (id: number) => api.get(`/api/users/${id}`),
-  getUserWithToken: (id: number, token: string) => {
-    console.log("[v0] getUserWithToken called with:", {
-      userId: id,
-      tokenLength: token?.length,
-      tokenPreview: token?.substring(0, 20) + "...",
-    })
-    return api.get(`/api/users/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-  },
+  getUserWithToken: (id: number, token: string) =>
+      api.get(`/api/users/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
   train: (id: number, data: { stat: string; amount: number }) => api.post(`/api/users/${id}/train`, data),
   rest: (id: number, data: { amount: number }) => api.post(`/api/users/${id}/rest`, data),
   purchase: (id: number, data: { accessoryName: string }) => api.post(`/api/users/${id}/purchase`, data),
-  addSession: (id: number, data: { description: string }) => api.post(`/api/users/${id}/sessions`, data),
-  getSessions: (id: number) => api.get(`/api/users/${id}/sessions`),
 }
 
-// Exercise endpoints
+// Exercise API
 export const exerciseAPI = {
   list: () => api.get("/api/exercises"),
+  getById: (id: number) => api.get(`/api/exercises/${id}`),
   create: (data: {
     name: string
+    category: string
     description: string
-    strengthImpact: number
     enduranceImpact: number
+    strengthImpact: number
     flexibilityImpact: number
   }) => api.post("/api/exercises", data),
+  update: (
+      id: number,
+      data: {
+        name: string
+        category: string
+        description: string
+        enduranceImpact: number
+        strengthImpact: number
+        flexibilityImpact: number
+      },
+  ) => api.put(`/api/exercises/${id}`, data),
+  delete: (id: number) => api.delete(`/api/exercises/${id}`),
 }
 
-// Routine endpoints
+// Routine API
 export const routineAPI = {
   list: () => api.get("/api/routines"),
+  getById: (id: number) => api.get(`/api/routines/${id}`),
   create: (data: { name: string; exercises: number[] }) => api.post("/api/routines", data),
+  update: (id: number, data: { name: string; exercises: number[] }) => api.put(`/api/routines/${id}`, data),
+  delete: (id: number) => api.delete(`/api/routines/${id}`),
 }
 
-export default api
+// Admin API
+export const adminAPI = {
+  // User management
+  listUsers: () => api.get("/api/admin/users"),
+  getUserById: (id: number) => api.get(`/api/admin/users/${id}`),
+  createUser: (data: { name: string; username: string; password: string; role: string }) =>
+      api.post("/api/admin/users", data),
+  updateUser: (id: number, data: { name?: string; username?: string; role?: string }) =>
+      api.put(`/api/admin/users/${id}`, data),
+  deleteUser: (id: number) => api.delete(`/api/admin/users/${id}`),
+  changeUserRole: (id: number, role: string) => api.put(`/api/admin/users/${id}/role`, { role }),
+  resetUserPassword: (id: number, newPassword: string) =>
+      api.put(`/api/admin/users/${id}/password`, { password: newPassword }),
+}

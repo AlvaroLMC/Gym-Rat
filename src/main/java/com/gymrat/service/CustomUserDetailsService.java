@@ -32,7 +32,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(User user) {
-        // Convertir el enum Role a String con el prefijo "ROLE_"
         String roleName = "ROLE_" + user.getRole().name();
         return Collections.singletonList(new SimpleGrantedAuthority(roleName));
     }

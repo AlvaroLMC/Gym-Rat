@@ -10,21 +10,20 @@ import { SessionCard } from "@/components/SessionCard"
 import { OverTrainingAlert } from "@/components/OverTrainingAlert"
 import { EnergyBar } from "@/components/EnergyBar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Dumbbell, Heart, Zap, TrendingUp, Loader2 } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
+import { Dumbbell, Heart, Zap, Loader2 } from "lucide-react"
 
 const ACCESSORIES = [
-  { name: "Cinturón de levantamiento", image: "/accessories/belt.png" },
-  { name: "Guantes de gimnasio", image: "/accessories/gloves.png" },
-  { name: "Cuerda para saltar", image: "/accessories/rope.png" },
-  { name: "Toalla de entrenamiento", image: "/accessories/towel.png" },
-  { name: "Pulsera de actividad", image: "/accessories/bracelet.png" },
-  { name: "Auriculares Bluetooth", image: "/accessories/headphones.png" },
-  { name: "Camisetas sin mangas", image: "/accessories/tank-top.png" },
-  { name: "Mochila", image: "/accessories/backpack.png" },
-  { name: "Botella reutilizable", image: "/accessories/bottle.png" },
-  { name: 'Camiseta "No Pain No Gain"', image: "/accessories/tshirt.png" },
-  { name: "Zapatillas", image: "/accessories/shoes.png" },
+  { name: "Cinturón de levantamiento", image: "/gym-lifting-belt-accessory.jpg" },
+  { name: "Guantes de gimnasio", image: "/gym-workout-gloves.jpg" },
+  { name: "Cuerda para saltar", image: "/jump-rope-fitness-accessory.jpg" },
+  { name: "Toalla de entrenamiento", image: "/gym-training-towel.jpg" },
+  { name: "Pulsera de actividad", image: "/fitness-activity-tracker-bracelet.jpg" },
+  { name: "Auriculares Bluetooth", image: "/bluetooth-wireless-headphones.jpg" },
+  { name: "Camisetas sin mangas", image: "/gym-tank-top-sleeveless-shirt.jpg" },
+  { name: "Mochila", image: "/gym-sports-backpack.jpg" },
+  { name: "Botella reutilizable", image: "/reusable-water-bottle.png" },
+  { name: 'Camiseta "No Pain No Gain"', image: "/no-pain-no-gain-gym-tshirt.jpg" },
+  { name: "Zapatillas", image: "/athletic-training-shoes-sneakers.jpg" },
 ]
 
 export default function DashboardPage() {
@@ -38,6 +37,18 @@ export default function DashboardPage() {
       router.push("/login")
     }
   }, [user, isLoading, router])
+
+  useEffect(() => {
+    if (user) {
+      console.log("[v0] Dashboard - User loaded:", {
+        name: user.name,
+        role: user.role,
+        strength: user.strength,
+        endurance: user.endurance,
+        flexibility: user.flexibility,
+      })
+    }
+  }, [user])
 
   if (isLoading || !user) {
     return (
@@ -98,30 +109,6 @@ export default function DashboardPage() {
             <StatCard title="Resistencia" value={user.endurance} icon={Heart} color="bg-chart-2" />
             <StatCard title="Flexibilidad" value={user.flexibility} icon={Zap} color="bg-chart-3" />
           </div>
-
-          {user.accessoryPurchased && purchasedAccessory && (
-              <Card className="border-2 border-primary/50 bg-primary/5">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-6">
-                    <div className="bg-primary/10 p-4 rounded-xl border-2 border-primary/30">
-                      <img
-                          src={purchasedAccessory.image || "/placeholder.svg"}
-                          alt={purchasedAccessory.name}
-                          className="h-20 w-20 object-contain"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-semibold text-lg">{purchasedAccessory.name}</p>
-                      <p className="text-muted-foreground">Accesorio equipado que mejora tu rendimiento</p>
-                    </div>
-                    <Badge className="ml-auto" variant="secondary">
-                      <TrendingUp className="h-3 w-3 mr-1" />
-                      Activo
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-          )}
 
           {/* Training Actions */}
           <div>

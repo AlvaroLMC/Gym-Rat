@@ -1,1 +1,5 @@
-com\gymrat\GymRatApplicationTests.class
+com\gymrat\controller\AuthControllerIntegrationTest.class
+com\gymrat\controller\ExerciseControllerIntegrationTest.class
+com\gymrat\controller\GymControllerIntegrationTest.class
+com\gymrat\controller\AdminControllerIntegrationTest.class
+com\gymrat\controller\RoutineControllerIntegrationTest.class

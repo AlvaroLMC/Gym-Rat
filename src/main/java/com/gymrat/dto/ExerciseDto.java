@@ -7,7 +7,9 @@ public class ExerciseDto {
     private Long id;
     private String name;
     private String description;
-    private Integer strengthImpact;
+    private String category;
     private Integer enduranceImpact;
+    private Integer strengthImpact;
     private Integer flexibilityImpact;
+
 }

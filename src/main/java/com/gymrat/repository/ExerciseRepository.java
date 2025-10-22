@@ -11,7 +11,5 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
 
     List<Exercise> findByCategory(String category);
 
-    List<Exercise> findByDifficulty(String difficulty);
-
     boolean existsByNameIgnoreCase(String name);
 }

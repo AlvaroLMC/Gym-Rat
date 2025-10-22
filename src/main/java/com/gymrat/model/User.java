@@ -1,11 +1,19 @@
 package com.gymrat.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,124 +41,19 @@ public class User {
     private String accessoryName;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<TrainingSession> sessions = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Routine> routines = new ArrayList<>();
-
-    // Constructors
-    public User() {}
 
     public User(String name, String username, String password) {
         this.name = name;
         this.username = username;
         this.password = password;
-        this.role = Role.USER; // Default role
     }
 
-    public User(String name, String username, String password, Role role) {
-        this.name = name;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public int getStrength() {
-        return strength;
-    }
-
-    public void setStrength(int strength) {
-        this.strength = strength;
-    }
-
-    public int getEndurance() {
-        return endurance;
-    }
-
-    public void setEndurance(int endurance) {
-        this.endurance = endurance;
-    }
-
-    public int getFlexibility() {
-        return flexibility;
-    }
-
-    public void setFlexibility(int flexibility) {
-        this.flexibility = flexibility;
-    }
-
-    public boolean isAccessoryPurchased() {
-        return accessoryPurchased;
-    }
-
-    public void setAccessoryPurchased(boolean accessoryPurchased) {
-        this.accessoryPurchased = accessoryPurchased;
-    }
-
-    public String getAccessoryName() {
-        return accessoryName;
-    }
-
-    public void setAccessoryName(String accessoryName) {
-        this.accessoryName = accessoryName;
-    }
-
-    public List<TrainingSession> getSessions() {
-        return sessions;
-    }
-
-    public void setSessions(List<TrainingSession> sessions) {
-        this.sessions = sessions;
-    }
-
-    public List<Routine> getRoutines() {
-        return routines;
-    }
-
-    public void setRoutines(List<Routine> routines) {
-        this.routines = routines;
-    }
 }
 
 

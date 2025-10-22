@@ -1,1 +1,5 @@
-C:\Users\rquer\Documents\IdeaProjects\gym-rat\src\test\java\com\gymrat\GymRatApplicationTests.java
+C:\Users\rquer\Documents\IdeaProjects\gym-rat\src\test\java\com\gymrat\controller\GymControllerIntegrationTest.java
+C:\Users\rquer\Documents\IdeaProjects\gym-rat\src\test\java\com\gymrat\controller\ExerciseControllerIntegrationTest.java
+C:\Users\rquer\Documents\IdeaProjects\gym-rat\src\test\java\com\gymrat\controller\AuthControllerIntegrationTest.java
+C:\Users\rquer\Documents\IdeaProjects\gym-rat\src\test\java\com\gymrat\controller\RoutineControllerIntegrationTest.java
+C:\Users\rquer\Documents\IdeaProjects\gym-rat\src\test\java\com\gymrat\controller\AdminControllerIntegrationTest.java

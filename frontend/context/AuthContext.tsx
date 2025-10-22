@@ -52,22 +52,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (username: string, password: string) => {
     try {
+      console.log("[v0] === INICIO LOGIN ===")
+      console.log("[v0] Username:", username)
+
       const response = await authAPI.login({ username, password })
+      console.log("[v0] Login response:", response.data)
+
       const { token: newToken, id } = response.data
+      console.log("[v0] Token y ID extraídos:", { id, tokenLength: newToken?.length })
 
       if (typeof window !== "undefined") {
         localStorage.setItem("token", newToken)
       }
       setToken(newToken)
 
+      console.log("[v0] Obteniendo datos del usuario con ID:", id)
       const userResponse = await userAPI.getUserWithToken(id, newToken)
+      console.log("[v0] User response status:", userResponse.status)
+      console.log("[v0] User response data:", userResponse.data)
+
       const userData = userResponse.data
 
       if (typeof window !== "undefined") {
         localStorage.setItem("user", JSON.stringify(userData))
       }
       setUser(userData)
+
+      console.log("[v0] === LOGIN EXITOSO ===")
     } catch (error: any) {
+      console.error("[v0] === ERROR EN LOGIN ===")
+      console.error("[v0] Error completo:", error)
+      console.error("[v0] Mensaje:", error.message)
+      console.error("[v0] Respuesta:", error.response?.data)
+      console.error("[v0] Status:", error.response?.status)
+      console.error("[v0] Headers:", error.response?.headers)
+
       throw new Error(error.response?.data?.message || "Error al iniciar sesión")
     }
   }
@@ -138,9 +157,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout, refreshUser, isLoading }}>
-      {children}
-    </AuthContext.Provider>
+      <AuthContext.Provider value={{ user, token, login, register, logout, refreshUser, isLoading }}>
+        {children}
+      </AuthContext.Provider>
   )
 }
 

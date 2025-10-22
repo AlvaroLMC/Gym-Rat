@@ -1,10 +1,13 @@
 package com.gymrat.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "training_sessions")
+@Data
 public class TrainingSession {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +23,12 @@ public class TrainingSession {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    // Constructors
+
     public TrainingSession() {
         this.timestamp = LocalDateTime.now();
     }
+
+    //unificar los dos constructores (hacen lo mismo pero afecta el orden)
 
     public TrainingSession(User user, String description) {
         this.user = user;
@@ -35,38 +40,5 @@ public class TrainingSession {
         this.description = description;
         this.user = user;
         this.timestamp = LocalDateTime.now();
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
     }
 }

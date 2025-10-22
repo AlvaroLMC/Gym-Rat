@@ -1,0 +1,15 @@
+2025-10-22 00:56:20.000  INFO 11632 --- [http-nio-8080-exec-1] AUDIT                                    : ROUTINE_CREATED - Usuario: admin, Rutina ID: 9, Nombre: Martes, Ejercicios: 2
+2025-10-22 11:07:26.530  INFO 28164 --- [main] AUDIT                                    : ROUTINE_CREATED - Usuario: johndoe, Rutina ID: 4, Nombre: Morning Routine, Ejercicios: 2
+2025-10-22 11:12:43.834  INFO 7816 --- [main] AUDIT                                    : ROUTINE_UPDATED - Usuario: johndoe, Rutina ID: 1, Nombre anterior: Old Routine, Nombre nuevo: Updated Routine
+2025-10-22 11:12:44.088  INFO 7816 --- [main] AUDIT                                    : ROUTINE_DELETED - Usuario: johndoe, Rutina ID: 3, Nombre: To Delete
+2025-10-22 11:12:44.506  INFO 7816 --- [main] AUDIT                                    : ROUTINE_CREATED - Usuario: johndoe, Rutina ID: 4, Nombre: Morning Routine, Ejercicios: 2
+2025-10-22 11:16:09.182  INFO 24020 --- [main] AUDIT                                    : ROUTINE_UPDATED - Usuario: johndoe, Rutina ID: 1, Nombre anterior: Old Routine, Nombre nuevo: Updated Routine
+2025-10-22 11:16:09.927  INFO 24020 --- [main] AUDIT                                    : ROUTINE_DELETED - Usuario: johndoe, Rutina ID: 3, Nombre: To Delete
+2025-10-22 11:16:10.491  INFO 24020 --- [main] AUDIT                                    : ROUTINE_CREATED - Usuario: johndoe, Rutina ID: 4, Nombre: Morning Routine, Ejercicios: 2
+2025-10-22 11:28:16.467  INFO 21020 --- [main] AUDIT                                    : ROUTINE_UPDATED - Usuario: johndoe, Rutina ID: 1, Nombre anterior: Old Routine, Nombre nuevo: Updated Routine
+2025-10-22 11:28:16.652  INFO 21020 --- [main] AUDIT                                    : ROUTINE_DELETED - Usuario: johndoe, Rutina ID: 3, Nombre: To Delete
+2025-10-22 11:28:16.752  INFO 21020 --- [main] AUDIT                                    : ROUTINE_CREATED - Usuario: johndoe, Rutina ID: 4, Nombre: Morning Routine, Ejercicios: 2
+2025-10-22 14:32:30.201  INFO 17956 --- [http-nio-8080-exec-9] AUDIT                                    : ROUTINE_CREATED - Usuario: maria, Rutina ID: 10, Nombre: Lunes, Ejercicios: 1
+2025-10-22 14:32:44.482  INFO 17956 --- [http-nio-8080-exec-5] AUDIT                                    : ROUTINE_CREATED - Usuario: maria, Rutina ID: 11, Nombre: Martes, Ejercicios: 1
+2025-10-22 14:34:38.015  INFO 17956 --- [http-nio-8080-exec-3] AUDIT                                    : ROUTINE_CREATED - Usuario: admin, Rutina ID: 12, Nombre: Miercoles, Ejercicios: 1
+2025-10-22 15:44:54.232  INFO 27172 --- [http-nio-8080-exec-8] AUDIT                                    : ROUTINE_CREATED - Usuario: admin, Rutina ID: 1, Nombre: Lunes, Ejercicios: 1
